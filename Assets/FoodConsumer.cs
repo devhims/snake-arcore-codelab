@@ -45,5 +45,10 @@ public class FoodConsumer : MonoBehaviour
             }
             pi += 1 ;
         }
+        else if (collision.gameObject.CompareTag("Body"))
+        {
+            Time.timeScale = 0;
+        }
+
     }
 }

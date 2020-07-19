@@ -82,13 +82,13 @@ public class SceneController : MonoBehaviour
         GetComponent<FoodController>().SetSelectedPlane(selectedPlane);
     }
 
-    void OnTriggerEnter(Collider other)
-    {
-        if (other.gameObject.CompareTag("Body"))
-        {
-            EndGame.SetActive(true);
-            snake.SetActive(false);
-        }
-    }
+    //void OnTriggerEnter(Collider other)
+    //{
+    //    if (other.gameObject.CompareTag("Body"))
+    //    {
+    //        EndGame.SetActive(true);
+    //        snake.SetActive(false);
+    //    }
+    //}
 
 }
