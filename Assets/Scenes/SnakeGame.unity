@@ -212,7 +212,6 @@ GameObject:
   - component: {fileID: 232749884}
   - component: {fileID: 232749885}
   - component: {fileID: 232749886}
-  - component: {fileID: 232749887}
   m_Layer: 0
   m_Name: SceneController
   m_TagString: Untagged
@@ -249,7 +248,7 @@ MonoBehaviour:
   firstPersonCamera: {fileID: 1729589744}
   snakeController: {fileID: 817042315}
   Empty: {fileID: 1239713540}
-  endGame: {fileID: 2111185296}
+  EndGame: {fileID: 2111185296}
   snake: {fileID: 817042314}
 --- !u!114 &232749884
 MonoBehaviour:
@@ -296,18 +295,6 @@ MonoBehaviour:
   - {fileID: 1913620319998376, guid: 1084833c96f064d348b5f2d6b92e4d2b, type: 3}
   - {fileID: 1857551045338566, guid: 6ed7a7f7a75ef400a883c50389e70412, type: 3}
   - {fileID: 1141594904977818, guid: 26f6bd880ce034294949696670b9a2ca, type: 3}
---- !u!114 &232749887
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 232749881}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6f810ec225133e84f84b60ddb833ae49, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &334412348
 GameObject:
   m_ObjectHideFlags: 0
@@ -1398,7 +1385,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 0.9858491, b: 0.9858491, a: 1}
+  m_Color: {r: 0.007742955, g: 0.1241374, b: 0.5471698, a: 1}
   m_RaycastTarget: 1
   m_Maskable: 1
   m_OnCullStateChanged:
@@ -1411,11 +1398,11 @@ MonoBehaviour:
     m_BestFit: 0
     m_MinSize: 4
     m_MaxSize: 40
-    m_Alignment: 4
+    m_Alignment: 0
     m_AlignByGeometry: 0
     m_RichText: 1
-    m_HorizontalOverflow: 1
-    m_VerticalOverflow: 1
+    m_HorizontalOverflow: 0
+    m_VerticalOverflow: 0
     m_LineSpacing: 1
   m_Text: 'GAME OVER!!!!!!
 

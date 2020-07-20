@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using GoogleARCore;
-using System.Threading;
+
 
 public class SceneController : MonoBehaviour
 {
@@ -10,8 +10,8 @@ public class SceneController : MonoBehaviour
     //public ScoreBoardController scoreboard;
     public SnakeController snakeController;
     public GameObject Empty;
-    public GameObject endGame;
-   // public GameObject snake;
+    public GameObject EndGame;
+    public GameObject snake;
 
 
     // Start is called before the first frame update
@@ -34,11 +34,6 @@ public class SceneController : MonoBehaviour
      
         ProcessTouches();
        // scoreboard.SetScore(snakeController.GetLength());
-       if( Time.timeScale == 0 )
-        {
-            endGame.SetActive(true);
-
-        }
 
     }
 
