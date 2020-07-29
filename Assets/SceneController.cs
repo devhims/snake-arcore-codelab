@@ -4,8 +4,13 @@ using UnityEngine;
 using GoogleARCore;
 using System.Threading;
 
+public delegate void SetSelectedPlaneHandler(DetectedPlane selectedPlane);
+
+
+
 public class SceneController : MonoBehaviour
 {
+    public static event SetSelectedPlaneHandler SetSelectedPlane;
     public Camera firstPersonCamera;
     //public ScoreBoardController scoreboard;
     public SnakeController snakeController;
@@ -69,7 +74,7 @@ public class SceneController : MonoBehaviour
         TrackableHitFlags raycastFilter =
             TrackableHitFlags.PlaneWithinBounds |
             TrackableHitFlags.PlaneWithinPolygon;
-        if (Frame.Raycast(touch.position.x, touch.position.y, raycastFilter, out hit))
+        if (Frame.Raycast(touch.position.x, touch.position.y, raycastFilter, out hit) && SetSelectedPlane != null)
         {
             SetSelectedPlane(hit.Trackable as DetectedPlane);
             FoodConsumer.ap = 0;
@@ -79,13 +84,13 @@ public class SceneController : MonoBehaviour
         }
     }
 
-    void SetSelectedPlane(DetectedPlane selectedPlane)
+   /* void SetSelectedPlane(DetectedPlane selectedPlane)
     {
         Debug.Log("Selected plane centered at " + selectedPlane.CenterPose.position);
         //scoreboard.SetSelectedPlane(selectedPlane);
         snakeController.SetPlane(selectedPlane);
         GetComponent<FoodController>().SetSelectedPlane(selectedPlane);
-    }
+    }*/
 
     //void OnTriggerEnter(Collider other)
     //{

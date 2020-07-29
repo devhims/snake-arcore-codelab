@@ -12,6 +12,10 @@ public class FoodController : MonoBehaviour
     private readonly float maxAge = 10f;
     public GameObject[] foodModels;
 
+    void OnEnable()
+    {
+        SceneController.SetSelectedPlane += SetSelectedPlane;
+    }
 
     // Update is called once per frame
     void Update()

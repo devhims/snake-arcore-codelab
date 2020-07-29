@@ -14,9 +14,9 @@ public class SnakeController : MonoBehaviour
     // Speed to move..
     public float speed = 20f;
     // Start is called before the first frame update
-    void Start()
+    void OnEnable()
     {
-
+        SceneController.SetSelectedPlane += SetPlane;
     }
 
     // Update is called once per frame
