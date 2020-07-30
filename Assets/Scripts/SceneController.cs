@@ -31,9 +31,6 @@ public class SceneController : MonoBehaviour
                     playing = true;
                     Time.timeScale = 1;
                     PlaneSelected?.Invoke(hit.Trackable as DetectedPlane);
-                    FoodConsumer.ap = 0;
-                    FoodConsumer.ba = 0;
-                    FoodConsumer.pi = 0;
                 }
             }
         }

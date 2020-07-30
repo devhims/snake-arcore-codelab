@@ -7,32 +7,48 @@ using GoogleARCore;
 
 public class UIManager: MonoBehaviour
 {
-    public Text appleCount;
-    public Text bananaCount;
-    public Text pizzaCount;
-
+    public Text appleCountText;
+    public Text bananaCountText;
+    public Text pizzaCountText;
     public GameObject endGameUI;
+
+    int appleCount;
+    int bananaCount;
+    int pizzaCount;
 
     private void OnEnable()
     {
         FoodConsumer.SelfAnnihilation += BodyBite;
         SceneController.PlaneSelected += GameRestarted;
+        FoodConsumer.FoodConsumed += FoodCountUpdate;
     }
 
     void Start()
     {
-        appleCount.text = " X 0 ";
-        bananaCount.text = " X 0 ";
-        pizzaCount.text = " X 0 ";
-
         endGameUI.SetActive(false);
     }
-    // Update is called once per frame
-    void Update()
+
+    void FoodCountUpdate(string name)
     {
-        appleCount.text = " X " + FoodConsumer.ap;
-        bananaCount.text = " X " + FoodConsumer.ba;
-        pizzaCount.text = " X " + FoodConsumer.pi;
+        if (name == "Apple(Clone)")
+        {
+            appleCount++;
+            CounterTextUpdate();
+        }
+        else if (name == "Banana(Clone)")
+        {
+            bananaCount++;
+            CounterTextUpdate();
+        }
+        else if (name == "Pizza(Clone)")
+        {
+            pizzaCount++;
+            CounterTextUpdate();
+        }
+        else
+        {
+            Debug.LogWarning("Unknown food consumed: " + name);
+        }
     }
 
     void BodyBite()
@@ -43,5 +59,15 @@ public class UIManager: MonoBehaviour
     void GameRestarted(DetectedPlane detectedPlane)
     {
         endGameUI.SetActive(false);
+
+        appleCount = 0; bananaCount = 0; pizzaCount = 0;
+        CounterTextUpdate();
+    }
+
+    void CounterTextUpdate()
+    {
+        appleCountText.text = appleCount.ToString();
+        bananaCountText.text = bananaCount.ToString();
+        pizzaCountText.text = pizzaCount.ToString();
     }
 }

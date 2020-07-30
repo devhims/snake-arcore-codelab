@@ -4,49 +4,26 @@ using System.Globalization;
 using UnityEngine;
 using UnityEngine.UI;
 using System;
+using GoogleARCore;
 
 public class FoodConsumer : MonoBehaviour
 {
     public static event Action SelfAnnihilation;
-    public static int ap = 0 , ba = 0 , pi = 0 ;
+    public static event Action<string> FoodConsumed;
 
     void OnCollisionEnter(Collision collision)
     {
-        if (collision.gameObject.tag == "Apple")
+        if (collision.gameObject.tag == "Food")
         {
             collision.gameObject.SetActive(false);
-            Slithering s = GetComponentInParent<Slithering>();
 
+            Slithering s = GetComponentInParent<Slithering>();
             if (s != null)
             {
                 s.AddBodyPart();
             }
 
-            ap += 1 ;
-        }
-        else if (collision.gameObject.tag == "Banana")
-        {
-            
-            collision.gameObject.SetActive(false);
-            Slithering s = GetComponentInParent<Slithering>();
-
-            if (s != null)
-            {
-                s.AddBodyPart();
-            }
-            ba += 1;
-        }
-        else if (collision.gameObject.tag == "Pizza")
-        {
-            
-            collision.gameObject.SetActive(false);
-            Slithering s = GetComponentInParent<Slithering>();
-
-            if (s != null)
-            {
-                s.AddBodyPart();
-            }
-            pi += 1 ;
+            FoodConsumed?.Invoke(collision.gameObject.name);
         }
         else if (collision.gameObject.CompareTag("Body"))
         {
@@ -54,6 +31,5 @@ public class FoodConsumer : MonoBehaviour
             SceneController.playing = false;
             SelfAnnihilation?.Invoke();
         }
-
     }
 }
