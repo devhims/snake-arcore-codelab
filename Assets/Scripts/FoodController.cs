@@ -32,10 +32,10 @@ public class FoodController : MonoBehaviour
             return;
         }
 
-        while (detectedPlane.SubsumedBy != null)
-        {
-            detectedPlane = detectedPlane.SubsumedBy;
-        }
+        //while (detectedPlane.SubsumedBy != null)
+        //{
+        //    detectedPlane = detectedPlane.SubsumedBy;
+        //}
 
         if (foodInstance == null || foodInstance.activeSelf == false)
         {

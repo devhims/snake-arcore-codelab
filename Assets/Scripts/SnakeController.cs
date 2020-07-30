@@ -54,10 +54,10 @@ public class SnakeController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        while (detectedPlane.SubsumedBy != null)
-        {
-            detectedPlane = detectedPlane.SubsumedBy;
-        }
+        //while (detectedPlane.SubsumedBy != null)
+        //{
+        //    detectedPlane = detectedPlane.SubsumedBy;
+        //}
 
         TrackableHit hit;
         TrackableHitFlags raycastFilter = TrackableHitFlags.PlaneWithinBounds;

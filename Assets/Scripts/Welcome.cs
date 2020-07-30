@@ -5,8 +5,17 @@ using UnityEngine.SceneManagement;
 
 public class Welcome : MonoBehaviour
 {
-    public void BtnStartGame()
+    public GameObject startPanel;
+    public GameObject instructionPanel;
+
+    public void ShowInstructions()
     {
-        SceneManager.LoadScene("Instructions");
+        startPanel.SetActive(false);
+        instructionPanel.SetActive(true);
+    }
+
+    public void LoadARScene()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
     }
 }
