@@ -18,6 +18,7 @@ public class SnakeController : MonoBehaviour
     void OnEnable()
     {
         SceneController.PlaneSelected += SetPlane;
+        pointer.SetActive(false);
     }
 
     private void OnDisable()
@@ -46,19 +47,16 @@ public class SnakeController : MonoBehaviour
 
         // Pass the head to the slithering component to make movement work.
         GetComponent<Slithering>().Head = snakeInstance.transform;
+
+        pointer.SetActive(true);
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (snakeInstance == null || snakeInstance.activeSelf == false)
+        while (detectedPlane.SubsumedBy != null)
         {
-            pointer.SetActive(false);
-            return;
-        }
-        else
-        {
-            pointer.SetActive(true);
+            detectedPlane = detectedPlane.SubsumedBy;
         }
 
         TrackableHit hit;
@@ -66,18 +64,21 @@ public class SnakeController : MonoBehaviour
 
         if (Frame.Raycast(Screen.width / 2, Screen.height / 2, raycastFilter, out hit))
         {
-            float snakePosY = snakeInstance.transform.position.y;
+            if (hit.Trackable == detectedPlane)
+            {
+                float snakePosY = snakeInstance.transform.position.y;
 
-            Vector3 pt = hit.Pose.position;
-            //Set the Y to the Y of the snakeInstance
-            pt.y = snakePosY;
+                Vector3 pt = hit.Pose.position;
+                //Set the Y to the Y of the snakeInstance
+                pt.y = snakePosY;
 
-            // Set the y position relative to the plane and attach the pointer to the plane
-            Vector3 pos = pointer.transform.localPosition;
-            pos.y = snakePosY;
+                // Set the y position relative to the plane and attach the pointer to the plane
+                Vector3 pos = pointer.transform.localPosition;
+                pos.y = snakePosY;
 
-            // Now lerp to the position                                         
-            pointer.transform.localPosition = Vector3.Lerp(pos, pt, Time.smoothDeltaTime * speed);
+                // Now lerp to the position                                         
+                pointer.transform.localPosition = Vector3.Lerp(pos, pt, Time.smoothDeltaTime * speed);
+            }
         }
 
         dist = Vector3.Distance(pointer.transform.localPosition, snakeInstance.transform.localPosition) - 0.05f;
