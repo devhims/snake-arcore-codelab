@@ -14,7 +14,7 @@ public class FoodController : MonoBehaviour
 
     void OnEnable()
     {
-        SceneController.SetSelectedPlane += SetSelectedPlane;
+        SceneController.PlaneSelected += SetSelectedPlane;
     }
 
     // Update is called once per frame
@@ -41,7 +41,7 @@ public class FoodController : MonoBehaviour
         foodAge += Time.deltaTime;
         if (foodAge >= maxAge)
         {
-            DestroyObject(foodInstance);
+            Destroy(foodInstance);
             foodInstance = null;
         }
 

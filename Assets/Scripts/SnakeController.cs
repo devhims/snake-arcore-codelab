@@ -16,7 +16,7 @@ public class SnakeController : MonoBehaviour
     // Start is called before the first frame update
     void OnEnable()
     {
-        SceneController.SetSelectedPlane += SetPlane;
+        SceneController.PlaneSelected += SetPlane;
     }
 
     // Update is called once per frame

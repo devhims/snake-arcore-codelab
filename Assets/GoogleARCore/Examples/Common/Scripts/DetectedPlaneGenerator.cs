@@ -33,12 +33,18 @@ namespace GoogleARCore.Examples.Common
         /// A prefab for tracking and visualizing detected planes.
         /// </summary>
         public GameObject DetectedPlanePrefab;
-        public GameObject Empty;
+        public GameObject planeParent;
         /// <summary>
         /// A list to hold new planes ARCore began tracking in the current frame. This object is
         /// used across the application to avoid per-frame allocations.
         /// </summary>
         private List<DetectedPlane> m_NewPlanes = new List<DetectedPlane>();
+
+
+        private void OnEnable()
+        {
+            SceneController.PlaneSelected += HidePlanes;
+        }
 
         /// <summary>
         /// The Unity Update method.
@@ -62,8 +68,13 @@ namespace GoogleARCore.Examples.Common
                 GameObject planeObject =
                     Instantiate(DetectedPlanePrefab, Vector3.zero, Quaternion.identity, transform);
                 planeObject.GetComponent<DetectedPlaneVisualizer>().Initialize(m_NewPlanes[i]);
-                planeObject.transform.parent = Empty.transform;
+                planeObject.transform.parent = planeParent.transform;
             }
+        }
+
+        void HidePlanes(DetectedPlane detectedPlane)
+        {
+            planeParent.SetActive(false);
         }
     }
 }

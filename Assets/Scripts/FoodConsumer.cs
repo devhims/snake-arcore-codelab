@@ -3,10 +3,13 @@ using System.Collections.Generic;
 using System.Globalization;
 using UnityEngine;
 using UnityEngine.UI;
+using System;
 
 public class FoodConsumer : MonoBehaviour
 {
+    public static event Action SelfAnnihilation;
     public static int ap = 0 , ba = 0 , pi = 0 ;
+
     void OnCollisionEnter(Collision collision)
     {
         if (collision.gameObject.tag == "Apple")
@@ -48,6 +51,8 @@ public class FoodConsumer : MonoBehaviour
         else if (collision.gameObject.CompareTag("Body"))
         {
             Time.timeScale = 0;
+            SceneController.playing = false;
+            SelfAnnihilation?.Invoke();
         }
 
     }
