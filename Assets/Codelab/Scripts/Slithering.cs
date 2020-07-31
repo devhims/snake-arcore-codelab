@@ -78,7 +78,7 @@ public class Slithering : MonoBehaviour
             Transform t = bodyParts[bodyParts.Count - 1];
             if (t != null)
             {
-                DestroyObject(t.gameObject);
+                Destroy(t.gameObject);
             }
             bodyParts.RemoveAt(bodyParts.Count - 1);
         }

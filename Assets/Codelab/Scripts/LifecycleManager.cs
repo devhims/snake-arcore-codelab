@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 using GoogleARCore;
+using UnityEngine.Android;
+using UnityEngine.SceneManagement;
 
 public class LifecycleManager : MonoBehaviour
 {
@@ -43,4 +45,10 @@ public class LifecycleManager : MonoBehaviour
 
         Screen.sleepTimeout = SleepTimeout.NeverSleep;
     }
+
+    public void LoadPreviousScene()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex - 1);
+    }
+
 }
