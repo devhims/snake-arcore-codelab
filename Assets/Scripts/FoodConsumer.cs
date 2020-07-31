@@ -11,6 +11,16 @@ public class FoodConsumer : MonoBehaviour
     public static event Action SelfAnnihilation;
     public static event Action<string> FoodConsumed;
 
+    public AudioClip chewingClip;
+    public AudioClip bombClip;
+
+    AudioSource audioSource;
+
+    private void Awake()
+    {
+        audioSource = GetComponent<AudioSource>();
+    }
+
     void OnCollisionEnter(Collision collision)
     {
         if (collision.gameObject.tag == "Food")
@@ -23,13 +33,24 @@ public class FoodConsumer : MonoBehaviour
                 s.AddBodyPart();
             }
 
+            audioSource?.PlayOneShot(chewingClip);
             FoodConsumed?.Invoke(collision.gameObject.name);
+        }
+        else if (collision.gameObject.CompareTag("Bomb"))
+        {
+            audioSource?.PlayOneShot(bombClip);
+            GameOver();
         }
         else if (collision.gameObject.CompareTag("Body"))
         {
-            Time.timeScale = 0;
-            SceneController.playing = false;
-            SelfAnnihilation?.Invoke();
+            GameOver();
         }
+    }
+
+    void GameOver()
+    {
+        Time.timeScale = 0;
+        SceneController.playing = false;
+        SelfAnnihilation?.Invoke();
     }
 }

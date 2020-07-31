@@ -64,7 +64,7 @@ public class SnakeController : MonoBehaviour
 
         if (Frame.Raycast(Screen.width / 2, Screen.height / 2, raycastFilter, out hit))
         {
-            if (hit.Trackable == detectedPlane)
+            if (hit.Trackable as DetectedPlane == detectedPlane)
             {
                 float snakePosY = snakeInstance.transform.localPosition.y;
 
