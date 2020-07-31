@@ -66,15 +66,15 @@ public class SnakeController : MonoBehaviour
         {
             if (hit.Trackable == detectedPlane)
             {
-                float snakePosY = snakeInstance.transform.position.y;
+                float snakePosY = snakeInstance.transform.localPosition.y;
 
                 Vector3 pt = hit.Pose.position;
                 //Set the Y to the Y of the snakeInstance
-                pt.y = snakePosY;
+                //pt.y = snakePosY;
 
                 // Set the y position relative to the plane and attach the pointer to the plane
                 Vector3 pos = pointer.transform.localPosition;
-                pos.y = snakePosY;
+                //pos.y = snakePosY;
 
                 // Now lerp to the position                                         
                 pointer.transform.localPosition = Vector3.Lerp(pos, pt, Time.smoothDeltaTime * speed);
