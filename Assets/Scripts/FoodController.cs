@@ -10,18 +10,16 @@ public class FoodController : MonoBehaviour
 
     DetectedPlane detectedPlane;
     GameObject foodInstance;
-    float foodAge;
-    readonly float maxAge = 10f;
 
     void OnEnable()
     {
         SceneController.PlaneSelected += SetSelectedPlane;
     }
 
-
     public void SetSelectedPlane(DetectedPlane selectedPlane)
     {
         detectedPlane = selectedPlane;
+        foodInstance?.SetActive(false);
     }
 
     // Update is called once per frame
@@ -42,28 +40,19 @@ public class FoodController : MonoBehaviour
             SpawnFoodInstance();
             return;
         }
-
-        foodAge += Time.deltaTime;
-        if (foodAge >= maxAge)
-        {
-            Destroy(foodInstance);
-            foodInstance = null;
-        }
     } 
 
     void SpawnFoodInstance()
     { 
-        GameObject foodItem = foodModels[Random.Range(0, foodModels.Length)];
-
         List<Vector3> vertices = new List<Vector3>();
         detectedPlane.GetBoundaryPolygon(vertices);
 
         Vector3 pt = vertices[Random.Range(0, vertices.Count)];
         float dist = Random.Range(0.05f, 1f);
-
         Vector3 position = Vector3.Lerp(pt, detectedPlane.CenterPose.position, dist);
 
-        foodInstance = Instantiate(foodItem, position, Quaternion.identity);
-        foodAge = 0;
+        foodInstance = foodModels[Random.Range(0, foodModels.Length)];
+        foodInstance.SetActive(true);
+        foodInstance.transform.position = position;
     }
 }

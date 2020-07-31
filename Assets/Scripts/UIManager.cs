@@ -30,17 +30,17 @@ public class UIManager: MonoBehaviour
 
     void FoodCountUpdate(string name)
     {
-        if (name == "Apple(Clone)")
+        if (name == "Apple")
         {
             appleCount++;
             CounterTextUpdate();
         }
-        else if (name == "Banana(Clone)")
+        else if (name == "Banana")
         {
             bananaCount++;
             CounterTextUpdate();
         }
-        else if (name == "Pizza(Clone)")
+        else if (name == "Pizza")
         {
             pizzaCount++;
             CounterTextUpdate();

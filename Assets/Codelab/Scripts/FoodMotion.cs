@@ -27,9 +27,22 @@ using UnityEngine;
 public class FoodMotion : MonoBehaviour
 {
     float speed = 20f;
+    protected int age = 10;
+
+    protected virtual void OnEnable()
+    {
+        CancelInvoke("HideFood");
+        Invoke("HideFood", age);
+    }
 
     void Update()
     {
         transform.Rotate(Vector3.down, Time.deltaTime * speed * 5);
+    }
+
+    void HideFood()
+    {
+        age = 10;
+        gameObject.SetActive(false);
     }
 }
