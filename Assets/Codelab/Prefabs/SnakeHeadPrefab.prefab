@@ -93,6 +93,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   chewingClip: {fileID: 8300000, guid: c133f40c3677046818125346af7688ae, type: 3}
   bombClip: {fileID: 8300000, guid: a779afa986e064abc802939519ad97fd, type: 3}
+  bodyBiteClip: {fileID: 8300000, guid: 6bc7e0c7e0f4f4e3b80ba3e0ec1a0818, type: 3}
 --- !u!82 &5948007831878030246
 AudioSource:
   m_ObjectHideFlags: 0

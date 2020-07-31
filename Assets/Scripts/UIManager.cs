@@ -11,14 +11,26 @@ public class UIManager: MonoBehaviour
     public Text bananaCountText;
     public Text pizzaCountText;
     public GameObject endGameUI;
+    public Text endUIText;
+
+    public RectTransform scorePanel;
+    public RectTransform panelParent;
+    public RectTransform bodyParent;
 
     int appleCount;
     int bananaCount;
     int pizzaCount;
 
+    string bodyBite = "That turn was pretty steep.\n" +
+    "The Snake bit itself.\n\n" +
+    "Tap Anywhere to play again!";
+
+    string bombBite = "Ah, our poor snake\ncan't digest a BOMB \n\n" +
+         "Tap Anywhere to play again!";
+
     private void OnEnable()
     {
-        FoodConsumer.SelfAnnihilation += BodyBite;
+        FoodConsumer.SelfAnnihilation += ShowGameOverUI;
         SceneController.PlaneSelected += GameRestarted;
         FoodConsumer.FoodConsumed += FoodCountUpdate;
     }
@@ -51,9 +63,26 @@ public class UIManager: MonoBehaviour
         }
     }
 
-    void BodyBite()
-    {
+    void ShowGameOverUI(BiteType biteType)
+    { 
+        //endUIText.text = biteType == BiteType.Body ? bodyBite : bombBite;
+
+        if (biteType == BiteType.Body)
+        {
+            endUIText.text = bodyBite;
+        }
+        else
+        {
+            endUIText.text = bombBite;
+        }
+
         endGameUI.SetActive(true);
+        scorePanel.SetParent(bodyParent);
+
+        scorePanel.anchorMin = new Vector2(0.5f, 1f);
+        scorePanel.anchorMax = new Vector2(0.5f, 1f);
+        scorePanel.pivot = new Vector2(0.5f, 1f);
+        scorePanel.localPosition = new Vector3(0, 150, 0);
     }
 
     void GameRestarted(DetectedPlane detectedPlane)
@@ -62,6 +91,13 @@ public class UIManager: MonoBehaviour
 
         appleCount = 0; bananaCount = 0; pizzaCount = 0;
         CounterTextUpdate();
+
+        scorePanel.SetParent(panelParent);
+
+        scorePanel.anchorMin = new Vector2(0f, 1f);
+        scorePanel.anchorMax = new Vector2(0f, 1f);
+        scorePanel.pivot = new Vector2(0f, 1f);
+        scorePanel.localPosition = Vector3.zero;
     }
 
     void CounterTextUpdate()

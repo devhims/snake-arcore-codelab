@@ -53,6 +53,6 @@ public class FoodController : MonoBehaviour
 
         foodInstance = foodModels[Random.Range(0, foodModels.Length)];
         foodInstance.SetActive(true);
-        foodInstance.transform.position = position;
+        foodInstance.transform.localPosition = position;
     }
 }

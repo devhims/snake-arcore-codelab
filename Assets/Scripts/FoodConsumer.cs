@@ -6,13 +6,20 @@ using UnityEngine.UI;
 using System;
 using GoogleARCore;
 
+public enum BiteType
+{
+    Body,
+    Bomb
+}
+
 public class FoodConsumer : MonoBehaviour
 {
-    public static event Action SelfAnnihilation;
+    public static event Action<BiteType> SelfAnnihilation;
     public static event Action<string> FoodConsumed;
 
     public AudioClip chewingClip;
     public AudioClip bombClip;
+    public AudioClip bodyBiteClip;
 
     AudioSource audioSource;
 
@@ -40,10 +47,13 @@ public class FoodConsumer : MonoBehaviour
         {
             audioSource?.PlayOneShot(bombClip);
             GameOver();
+            SelfAnnihilation.Invoke(BiteType.Bomb);
         }
         else if (collision.gameObject.CompareTag("Body"))
         {
+            audioSource?.PlayOneShot(bodyBiteClip);
             GameOver();
+            SelfAnnihilation?.Invoke(BiteType.Body);
         }
     }
 
@@ -51,6 +61,5 @@ public class FoodConsumer : MonoBehaviour
     {
         Time.timeScale = 0;
         SceneController.playing = false;
-        SelfAnnihilation?.Invoke();
     }
 }

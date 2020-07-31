@@ -47,8 +47,6 @@ public class SnakeController : MonoBehaviour
 
         // Pass the head to the slithering component to make movement work.
         GetComponent<Slithering>().Head = snakeInstance.transform;
-
-        pointer.SetActive(true);
     }
 
     // Update is called once per frame
@@ -66,7 +64,8 @@ public class SnakeController : MonoBehaviour
         {
             if (hit.Trackable as DetectedPlane == detectedPlane)
             {
-                float snakePosY = snakeInstance.transform.localPosition.y;
+                pointer.SetActive(true);
+                //float snakePosY = snakeInstance.transform.localPosition.y;
 
                 Vector3 pt = hit.Pose.position;
                 //Set the Y to the Y of the snakeInstance
