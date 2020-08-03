@@ -20,6 +20,7 @@ public class FoodConsumer : MonoBehaviour
     public AudioClip chewingClip;
     public AudioClip bombClip;
     public AudioClip bodyBiteClip;
+    public GameObject smokePrefab;
 
     AudioSource audioSource;
 

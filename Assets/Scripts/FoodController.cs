@@ -11,15 +11,30 @@ public class FoodController : MonoBehaviour
     DetectedPlane detectedPlane;
     GameObject foodInstance;
 
+    AudioSource audioSource;
+
+    private void Awake()
+    {
+        audioSource = GetComponent<AudioSource>();
+    }
+
     void OnEnable()
     {
         SceneController.PlaneSelected += SetSelectedPlane;
+        BombMotion.BombDead += PlayAudio;
+    }
+
+    private void OnDisable()
+    {
+        SceneController.PlaneSelected -= SetSelectedPlane;
+        BombMotion.BombDead -= PlayAudio;
     }
 
     public void SetSelectedPlane(DetectedPlane selectedPlane)
     {
         detectedPlane = selectedPlane;
         foodInstance?.SetActive(false);
+        //foodInstance = null;
     }
 
     // Update is called once per frame
@@ -30,10 +45,10 @@ public class FoodController : MonoBehaviour
             return;
         }
 
-        //while (detectedPlane.SubsumedBy != null)
-        //{
-        //    detectedPlane = detectedPlane.SubsumedBy;
-        //}
+        while (detectedPlane.SubsumedBy != null)
+        {
+            detectedPlane = detectedPlane.SubsumedBy;
+        }
 
         if (foodInstance == null || foodInstance.activeSelf == false)
         {
@@ -54,5 +69,10 @@ public class FoodController : MonoBehaviour
         foodInstance = foodModels[Random.Range(0, foodModels.Length)];
         foodInstance.SetActive(true);
         foodInstance.transform.localPosition = position;
+    }
+
+    void PlayAudio(AudioClip audioClip)
+    {
+        audioSource?.PlayOneShot(audioClip);
     }
 }

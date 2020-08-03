@@ -52,10 +52,15 @@ public class SnakeController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //while (detectedPlane.SubsumedBy != null)
-        //{
-        //    detectedPlane = detectedPlane.SubsumedBy;
-        //}
+        if (detectedPlane == null)
+        {
+            return;
+        }
+
+        while (detectedPlane.SubsumedBy != null)
+        {
+            detectedPlane = detectedPlane.SubsumedBy;
+        }
 
         TrackableHit hit;
         TrackableHitFlags raycastFilter = TrackableHitFlags.PlaneWithinBounds;
@@ -64,7 +69,12 @@ public class SnakeController : MonoBehaviour
         {
             if (hit.Trackable as DetectedPlane == detectedPlane)
             {
-                pointer.SetActive(true);
+                if (!pointer.activeSelf)
+                {
+                    pointer.SetActive(true);
+                    pointer.transform.position = hit.Pose.position;
+                }
+
                 //float snakePosY = snakeInstance.transform.localPosition.y;
 
                 Vector3 pt = hit.Pose.position;
@@ -72,11 +82,11 @@ public class SnakeController : MonoBehaviour
                 //pt.y = snakePosY;
 
                 // Set the y position relative to the plane and attach the pointer to the plane
-                Vector3 pos = pointer.transform.localPosition;
+                Vector3 pos = pointer.transform.position;
                 //pos.y = snakePosY;
 
                 // Now lerp to the position                                         
-                pointer.transform.localPosition = Vector3.Lerp(pos, pt, Time.smoothDeltaTime * speed);
+                pointer.transform.position = Vector3.Lerp(pos, pt, Time.smoothDeltaTime * speed);
             }
         }
 
@@ -90,8 +100,12 @@ public class SnakeController : MonoBehaviour
 
     private void FixedUpdate()
     {
-        rb.transform.LookAt(pointer.transform.position);
-        rb.velocity = snakeInstance.transform.localScale.x * snakeInstance.transform.forward * dist / .01f;
+        if (rb != null && pointer.activeSelf)
+        {
+            rb.transform.LookAt(pointer.transform.position);
+            rb.velocity = snakeInstance.transform.localScale.x * snakeInstance.transform.forward * dist / .01f;
+        }
+
     }
 
     public int GetLength()

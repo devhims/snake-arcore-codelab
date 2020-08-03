@@ -4,6 +4,7 @@ using System.Globalization;
 using UnityEngine;
 using UnityEngine.UI;
 using GoogleARCore;
+using UnityEngine.SceneManagement;
 
 public class UIManager: MonoBehaviour
 {
@@ -12,6 +13,7 @@ public class UIManager: MonoBehaviour
     public Text pizzaCountText;
     public GameObject endGameUI;
     public Text endUIText;
+    public GameObject reloadButton;
 
     public RectTransform scorePanel;
     public RectTransform panelParent;
@@ -33,6 +35,13 @@ public class UIManager: MonoBehaviour
         FoodConsumer.SelfAnnihilation += ShowGameOverUI;
         SceneController.PlaneSelected += GameRestarted;
         FoodConsumer.FoodConsumed += FoodCountUpdate;
+    }
+
+    private void OnDisable()
+    {
+        FoodConsumer.SelfAnnihilation -= ShowGameOverUI;
+        SceneController.PlaneSelected -= GameRestarted;
+        FoodConsumer.FoodConsumed -= FoodCountUpdate;
     }
 
     void Start()
@@ -77,6 +86,7 @@ public class UIManager: MonoBehaviour
         }
 
         endGameUI.SetActive(true);
+        reloadButton.SetActive(false);
         scorePanel.SetParent(bodyParent);
 
         scorePanel.anchorMin = new Vector2(0.5f, 1f);
@@ -88,6 +98,7 @@ public class UIManager: MonoBehaviour
     void GameRestarted(DetectedPlane detectedPlane)
     {
         endGameUI.SetActive(false);
+        reloadButton.SetActive(true);
 
         appleCount = 0; bananaCount = 0; pizzaCount = 0;
         CounterTextUpdate();
@@ -105,5 +116,11 @@ public class UIManager: MonoBehaviour
         appleCountText.text = appleCount.ToString();
         bananaCountText.text = bananaCount.ToString();
         pizzaCountText.text = pizzaCount.ToString();
+    }
+
+    public void ReloadCurrentScene()
+    {
+        SceneController.playing = false;
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 }

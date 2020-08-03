@@ -73,7 +73,15 @@ namespace GoogleARCore.Examples.Common
                  return;
             }
 
-            m_MeshRenderer.enabled = true;
+            if(SceneController.playing)
+            {
+                if (m_MeshRenderer.enabled)
+                {
+                    m_MeshRenderer.enabled = false;
+                }
+            }
+
+            //m_MeshRenderer.enabled = true;
 
             _UpdateMeshIfNeeded();
         }

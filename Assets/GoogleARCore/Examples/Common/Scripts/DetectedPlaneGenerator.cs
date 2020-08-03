@@ -40,12 +40,6 @@ namespace GoogleARCore.Examples.Common
         /// </summary>
         private List<DetectedPlane> m_NewPlanes = new List<DetectedPlane>();
 
-
-        private void OnEnable()
-        {
-            SceneController.PlaneSelected += HidePlanes;
-        }
-
         /// <summary>
         /// The Unity Update method.
         /// </summary>
@@ -70,11 +64,6 @@ namespace GoogleARCore.Examples.Common
                 planeObject.GetComponent<DetectedPlaneVisualizer>().Initialize(m_NewPlanes[i]);
                 planeObject.transform.parent = planeParent.transform;
             }
-        }
-
-        void HidePlanes(DetectedPlane detectedPlane)
-        {
-            planeParent.SetActive(false);
         }
     }
 }
