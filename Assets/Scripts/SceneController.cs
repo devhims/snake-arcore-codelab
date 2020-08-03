@@ -30,7 +30,7 @@ public class SceneController : MonoBehaviour
                 {
                     playing = true;
                     Time.timeScale = 1;
-                    PlaneSelected?.Invoke(hit.Trackable as DetectedPlane);
+                    PlaneSelected?.Invoke(hit.Trackable as DetectedPlane); 
                 }
             }
         }

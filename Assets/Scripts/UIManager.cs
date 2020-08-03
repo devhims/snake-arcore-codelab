@@ -5,6 +5,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using GoogleARCore;
 using UnityEngine.SceneManagement;
+using LevelManagement.Data;
 
 public class UIManager: MonoBehaviour
 {
@@ -14,14 +15,20 @@ public class UIManager: MonoBehaviour
     public GameObject endGameUI;
     public Text endUIText;
     public GameObject reloadButton;
+    public GameObject reloadPanel;
+    public GameObject highScoreUI;
 
     public RectTransform scorePanel;
+    public GameObject scoreCounterUI;
     public RectTransform panelParent;
     public RectTransform bodyParent;
+
+    public SnakeController snakeController;
 
     int appleCount;
     int bananaCount;
     int pizzaCount;
+    int score = 0;
 
     string bodyBite = "That turn was pretty steep.\n" +
     "The Snake bit itself.\n\n" +
@@ -30,11 +37,15 @@ public class UIManager: MonoBehaviour
     string bombBite = "Ah, our poor snake\ncan't digest a BOMB \n\n" +
          "Tap Anywhere to play again!";
 
+    private DataManager dataManager;
+
     private void OnEnable()
     {
         FoodConsumer.SelfAnnihilation += ShowGameOverUI;
         SceneController.PlaneSelected += GameRestarted;
         FoodConsumer.FoodConsumed += FoodCountUpdate;
+
+        dataManager = FindObjectOfType<DataManager>();
     }
 
     private void OnDisable()
@@ -51,6 +62,8 @@ public class UIManager: MonoBehaviour
 
     void FoodCountUpdate(string name)
     {
+        score++;
+
         if (name == "Apple")
         {
             appleCount++;
@@ -73,8 +86,21 @@ public class UIManager: MonoBehaviour
     }
 
     void ShowGameOverUI(BiteType biteType)
-    { 
+    {
         //endUIText.text = biteType == BiteType.Body ? bodyBite : bombBite;
+
+        dataManager.Load();
+
+        if (score > dataManager.HighScore)
+        {
+            dataManager.HighScore = score;
+            dataManager.Save();
+            highScoreUI.SetActive(true);
+        }
+        else
+        {
+            highScoreUI.SetActive(false);
+        }
 
         if (biteType == BiteType.Body)
         {
@@ -87,28 +113,27 @@ public class UIManager: MonoBehaviour
 
         endGameUI.SetActive(true);
         reloadButton.SetActive(false);
-        scorePanel.SetParent(bodyParent);
 
-        scorePanel.anchorMin = new Vector2(0.5f, 1f);
-        scorePanel.anchorMax = new Vector2(0.5f, 1f);
-        scorePanel.pivot = new Vector2(0.5f, 1f);
-        scorePanel.localPosition = new Vector3(0, 150, 0);
+        scoreCounterUI.SetActive(true);
+        scoreCounterUI.transform.GetChild(0).GetComponent<Text>().text = string.Format("Score = {0}", score);
+
+        scorePanel.SetParent(bodyParent);
+        scorePanel.localPosition = Vector3.zero;
     }
 
     void GameRestarted(DetectedPlane detectedPlane)
     {
         endGameUI.SetActive(false);
         reloadButton.SetActive(true);
+        scoreCounterUI.SetActive(false);
 
         appleCount = 0; bananaCount = 0; pizzaCount = 0;
         CounterTextUpdate();
 
         scorePanel.SetParent(panelParent);
-
-        scorePanel.anchorMin = new Vector2(0f, 1f);
-        scorePanel.anchorMax = new Vector2(0f, 1f);
-        scorePanel.pivot = new Vector2(0f, 1f);
         scorePanel.localPosition = Vector3.zero;
+
+        score = 0;
     }
 
     void CounterTextUpdate()
@@ -120,7 +145,19 @@ public class UIManager: MonoBehaviour
 
     public void ReloadCurrentScene()
     {
+        reloadPanel.SetActive(true);
+        reloadButton.SetActive(false);
+        scorePanel.gameObject.SetActive(false);
         SceneController.playing = false;
+        StartCoroutine(LevelReloadRoutine());
+
+        snakeController.gameObject.SetActive(false);
+        score = 0;
+    }
+
+    IEnumerator LevelReloadRoutine()
+    {
+        yield return new WaitForSeconds(1.5f);
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 }

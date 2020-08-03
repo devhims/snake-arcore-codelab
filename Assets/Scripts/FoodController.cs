@@ -13,6 +13,8 @@ public class FoodController : MonoBehaviour
 
     AudioSource audioSource;
 
+    Anchor anchor;
+
     private void Awake()
     {
         audioSource = GetComponent<AudioSource>();
@@ -66,9 +68,15 @@ public class FoodController : MonoBehaviour
         float dist = Random.Range(0.05f, 1f);
         Vector3 position = Vector3.Lerp(pt, detectedPlane.CenterPose.position, dist);
 
+        anchor = null;
+        anchor = detectedPlane.CreateAnchor(new Pose(position, Quaternion.identity));
+
         foodInstance = foodModels[Random.Range(0, foodModels.Length)];
+        foodInstance.transform.position = position;
         foodInstance.SetActive(true);
-        foodInstance.transform.localPosition = position;
+
+        foodInstance.transform.parent = null;
+        foodInstance.transform.SetParent(anchor.transform);
     }
 
     void PlayAudio(AudioClip audioClip)

@@ -59,3 +59,5 @@ sysinfo.txt
 crashlytics-build.properties
 
 .DS_Store
+mono_crash.mem.12302.1.blob
+*.blob
