@@ -9,6 +9,16 @@ public class SceneController : MonoBehaviour
     public static event Action<DetectedPlane> PlaneSelected;
     public static bool playing = false;
 
+    private void OnEnable()
+    {
+        FoodConsumer.SelfAnnihilation += GameOver;
+    }
+
+    private void OnDisable()
+    {
+        FoodConsumer.SelfAnnihilation -= GameOver;
+    }
+
     // Update is called once per frame
     void Update()
     {
@@ -34,6 +44,12 @@ public class SceneController : MonoBehaviour
                 }
             }
         }
+    }
+
+    void GameOver(BiteType biteType)
+    {
+        Time.timeScale = 0;
+        playing = false;
     }
 
 }

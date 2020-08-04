@@ -3335,6 +3335,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c79ee4b5ea75344ab99985d3624adbe3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  MiddleMove: {fileID: 135694394}
   ElementsMove:
   - {fileID: 537120286}
   - {fileID: 1784584897}

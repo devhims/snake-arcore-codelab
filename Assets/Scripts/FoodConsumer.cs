@@ -12,6 +12,7 @@ public enum BiteType
     Bomb
 }
 
+[RequireComponent(typeof(AudioSource))]
 public class FoodConsumer : MonoBehaviour
 {
     public static event Action<BiteType> SelfAnnihilation;
@@ -20,7 +21,6 @@ public class FoodConsumer : MonoBehaviour
     public AudioClip chewingClip;
     public AudioClip bombClip;
     public AudioClip bodyBiteClip;
-    public GameObject smokePrefab;
 
     AudioSource audioSource;
 
@@ -31,7 +31,7 @@ public class FoodConsumer : MonoBehaviour
 
     void OnCollisionEnter(Collision collision)
     {
-        if (collision.gameObject.tag == "Food")
+        if (collision.gameObject.CompareTag("Food"))
         {
             collision.gameObject.SetActive(false);
 
@@ -41,26 +41,18 @@ public class FoodConsumer : MonoBehaviour
                 s.AddBodyPart();
             }
 
-            audioSource?.PlayOneShot(chewingClip);
+            audioSource.PlayOneShot(chewingClip);
             FoodConsumed?.Invoke(collision.gameObject.name);
         }
         else if (collision.gameObject.CompareTag("Bomb"))
         {
-            audioSource?.PlayOneShot(bombClip);
-            GameOver();
-            SelfAnnihilation.Invoke(BiteType.Bomb);
+            audioSource.PlayOneShot(bombClip);
+            SelfAnnihilation?.Invoke(BiteType.Bomb);
         }
         else if (collision.gameObject.CompareTag("Body"))
         {
-            audioSource?.PlayOneShot(bodyBiteClip);
-            GameOver();
+            audioSource.PlayOneShot(bodyBiteClip);
             SelfAnnihilation?.Invoke(BiteType.Body);
         }
-    }
-
-    void GameOver()
-    {
-        Time.timeScale = 0;
-        SceneController.playing = false;
     }
 }

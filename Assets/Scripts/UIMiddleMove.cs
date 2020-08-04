@@ -13,7 +13,11 @@ public class UIMiddleMove : UIElementsMove
 
     protected override void MoveElement()
     {
-        iTween.MoveTo(this.gameObject, iTween.Hash("position", destination, "islocal", true, "time", time, "oncomplete", "SetBool", "easetype", iTween.EaseType.easeOutBack));
+        iTween.MoveTo(this.gameObject, iTween.Hash(
+            "position", destination,
+            "islocal", true, "time", time,
+            "oncomplete", "SetBool",
+            "easetype", iTween.EaseType.easeOutBack));
     }
 
     void SetBool()

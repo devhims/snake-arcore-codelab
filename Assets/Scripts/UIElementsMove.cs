@@ -14,6 +14,9 @@ public class UIElementsMove : MonoBehaviour
 
     protected virtual void MoveElement()
     {
-        iTween.MoveTo(this.gameObject, iTween.Hash("position", destination, "islocal", true, "time", time));
+        iTween.MoveTo(this.gameObject, iTween.Hash(
+            "position", destination,
+            "islocal", true,
+            "time", time));
     }
 }

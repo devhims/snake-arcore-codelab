@@ -11,20 +11,21 @@ public class RawImageVideoPlayer : MonoBehaviour
     public Text handUIText;
     public RawImage rawImage;
     public VideoPlayer videoPlayer;
-    public Texture m_RawImageTexture;
+    public Texture rawImageTexture;
 
     void Start()
     {
         handUIText.gameObject.SetActive(false);
-        videoPlayer.prepareCompleted += _PrepareCompleted;
-        rawImage.texture = m_RawImageTexture;
+        videoPlayer.prepareCompleted += PrepareCompleted;
+        rawImage.texture = rawImageTexture;
     }
 
-    private void _PrepareCompleted(VideoPlayer player)
+    private void PrepareCompleted(VideoPlayer player)
     {
         rawImage.texture = player.texture;
         videoPlayer.enabled = true;
         videoPlayer.Play();
         handUIText.gameObject.SetActive(true);
     }
+
 }
