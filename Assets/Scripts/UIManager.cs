@@ -17,6 +17,7 @@ public class UIManager: MonoBehaviour
     public GameObject reloadButton;
     public GameObject reloadPanel;
     public GameObject highScoreUI;
+    public GameObject handScanUI;
 
     public RectTransform scorePanel;
     public GameObject scoreCounterUI;
@@ -126,6 +127,8 @@ public class UIManager: MonoBehaviour
         endGameUI.SetActive(false);
         reloadButton.SetActive(true);
         scoreCounterUI.SetActive(false);
+        handScanUI.SetActive(false);
+        panelParent.gameObject.SetActive(true);
 
         appleCount = 0; bananaCount = 0; pizzaCount = 0;
         CounterTextUpdate();
@@ -148,6 +151,7 @@ public class UIManager: MonoBehaviour
         reloadPanel.SetActive(true);
         reloadButton.SetActive(false);
         scorePanel.gameObject.SetActive(false);
+        handScanUI.SetActive(false);
         SceneController.playing = false;
         StartCoroutine(LevelReloadRoutine());
 
