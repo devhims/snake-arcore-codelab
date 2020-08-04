@@ -27,10 +27,7 @@ public class BombMotion : FoodMotion
         if (!gameOverCondition)
         {
             smokeObject.transform.position = transform.position;
-            smokeObject.SetActive(true);
-            smokeObject.GetComponent<ParticleSystem>().Play();
-            StartCoroutine(RemoveSmoke());
-
+            smokeObject.SetActive(true);          
             BombDead?.Invoke(bombBlast);
         }
     }
@@ -38,11 +35,5 @@ public class BombMotion : FoodMotion
     void SetGameOver(BiteType biteType)
     {
         gameOverCondition = true;
-    }
-
-    IEnumerator RemoveSmoke()
-    {
-        yield return new WaitForSeconds(2f);
-        smokeObject.SetActive(false);
     }
 }
