@@ -6,7 +6,7 @@ using UnityEngine.Video;
 
 [RequireComponent(typeof(RawImage))]
 [RequireComponent(typeof(VideoPlayer))]
-public class RawImageVideoPlayer : MonoBehaviour
+public class HandScanUI : MonoBehaviour
 {
     public Text handUIText;
     public RawImage rawImage;

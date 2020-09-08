@@ -40,7 +40,7 @@ public class SceneController : MonoBehaviour
                 {
                     playing = true;
                     Time.timeScale = 1;
-                    PlaneSelected?.Invoke(hit.Trackable as DetectedPlane); 
+                    PlaneSelected?.Invoke(hit.Trackable as DetectedPlane);
                 }
             }
         }
@@ -48,8 +48,8 @@ public class SceneController : MonoBehaviour
 
     void GameOver(BiteType biteType)
     {
-        Time.timeScale = 0;
         playing = false;
+        Time.timeScale = 0;
     }
 
 }

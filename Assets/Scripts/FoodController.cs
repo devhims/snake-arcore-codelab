@@ -12,7 +12,6 @@ public class FoodController : MonoBehaviour
     GameObject foodInstance;
 
     AudioSource audioSource;
-
     Anchor anchor;
 
     private void Awake()
@@ -36,7 +35,6 @@ public class FoodController : MonoBehaviour
     {
         detectedPlane = selectedPlane;
         foodInstance?.SetActive(false);
-        //foodInstance = null;
     }
 
     // Update is called once per frame

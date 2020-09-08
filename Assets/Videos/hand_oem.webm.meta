@@ -14,13 +14,13 @@ VideoClipImporter:
   importAudio: 1
   targetSettings:
     0:
-      enableTranscoding: 0
-      codec: 0
+      enableTranscoding: 1
+      codec: 2
       resizeFormat: 0
       aspectRatio: 0
       customWidth: 1024
       customHeight: 1024
-      bitrateMode: 2
+      bitrateMode: 1
       spatialQuality: 2
     4:
       enableTranscoding: 1

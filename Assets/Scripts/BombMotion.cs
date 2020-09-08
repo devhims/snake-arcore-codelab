@@ -10,13 +10,12 @@ public class BombMotion : FoodMotion
     public GameObject smokeObject;
 
     public static event Action<AudioClip> BombDead;
-
-    public bool gameOverCondition;
+    bool canBlast = true;
 
     protected override void OnEnable()
     {
         FoodConsumer.SelfAnnihilation += SetGameOver;
-        gameOverCondition = false;
+        canBlast = true;
         age = Random.Range(2, 6);
         base.OnEnable();
     }
@@ -24,7 +23,7 @@ public class BombMotion : FoodMotion
     private void OnDisable()
     {
         FoodConsumer.SelfAnnihilation -= SetGameOver;
-        if (!gameOverCondition)
+        if (canBlast)
         {
             smokeObject.transform.position = transform.position;
             smokeObject.SetActive(true);          
@@ -34,6 +33,6 @@ public class BombMotion : FoodMotion
 
     void SetGameOver(BiteType biteType)
     {
-        gameOverCondition = true;
+        canBlast = false;
     }
 }
