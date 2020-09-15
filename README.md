@@ -3,7 +3,7 @@ Get ready to indulge yourself in the fascinating world of augmented reality with
 
 **Built in:** Unity 2019.4
 
-**AR SDK:** Updated to AR Foundation (Previously, ARCore)
+**AR SDK:** Updated to AR Foundation v 4.0.8 (Previously, ARCore)
 
 **Demo Video:** **[Link](https://youtu.be/qW1h1FNRdFY)**
 
