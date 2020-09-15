@@ -1,7 +1,7 @@
 # Snake Snack
 Get ready to indulge yourself in the fascinating world of augmented reality with the spatial version of the nostalgic Nokia snake game.
 
-**Built in:** Unity 2019.4
+**Built in:** Unity 2019.4 LTS
 
 **AR SDK:** Updated to AR Foundation v 4.0.8 (Previously, ARCore)
 
