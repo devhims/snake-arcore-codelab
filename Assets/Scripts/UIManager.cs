@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using UnityEngine;
 using UnityEngine.UI;
-using GoogleARCore;
+using UnityEngine.XR.ARFoundation;
 using UnityEngine.SceneManagement;
 using LevelManagement.Data;
 
@@ -122,7 +122,7 @@ public class UIManager: MonoBehaviour
         scorePanel.localPosition = Vector3.zero;
     }
 
-    void GameRestarted(DetectedPlane detectedPlane)
+    void GameRestarted(ARPlane detectedPlane)
     {
         endGameUI.SetActive(false);
         reloadButton.SetActive(true);

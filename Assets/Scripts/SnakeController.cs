@@ -1,7 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using GoogleARCore;
+using UnityEngine.XR.ARFoundation;
+using UnityEngine.XR.ARSubsystems;
 
 public class SnakeController : MonoBehaviour
 {
@@ -9,10 +10,15 @@ public class SnakeController : MonoBehaviour
     public GameObject pointer;
     public float speed = 20f;
 
-    DetectedPlane detectedPlane;
+    ARPlane detectedPlane;
     GameObject snakeInstance;
     Rigidbody rb;
     float dist;
+
+    public ARRaycastManager raycastManager;
+    public ARPlaneManager planeManager;
+
+    List<ARRaycastHit> hits = new List<ARRaycastHit>();
 
     // Start is called before the first frame update
     void OnEnable()
@@ -26,7 +32,7 @@ public class SnakeController : MonoBehaviour
         SceneController.PlaneSelected -= SetPlane;
     }
 
-    public void SetPlane(DetectedPlane plane)
+    public void SetPlane(ARPlane plane)
     {
         detectedPlane = plane;
         SpawnSnake();
@@ -39,7 +45,7 @@ public class SnakeController : MonoBehaviour
             Destroy(snakeInstance);
         }
 
-        Vector3 pos = detectedPlane.CenterPose.position;
+        Vector3 pos = detectedPlane.center;
 
         // Not anchored, it is rigidbody that is influenced by the physics engine.
         snakeInstance = Instantiate(snakeHeadPrefab, pos, Quaternion.identity, transform);
@@ -57,27 +63,25 @@ public class SnakeController : MonoBehaviour
             return;
         }
 
-        while (detectedPlane.SubsumedBy != null)
+        while (detectedPlane.subsumedBy != null)
         {
-            detectedPlane = detectedPlane.SubsumedBy;
+            detectedPlane = detectedPlane.subsumedBy;
         }
 
-        TrackableHit hit;
-        TrackableHitFlags raycastFilter = TrackableHitFlags.PlaneWithinBounds;
 
-        if (Frame.Raycast(Screen.width / 2, Screen.height / 2, raycastFilter, out hit))
+        if (raycastManager.Raycast(new Vector2(Screen.width / 2, Screen.height / 2), hits, TrackableType.PlaneWithinBounds))
         {
-            if (hit.Trackable as DetectedPlane == detectedPlane)
+            if (planeManager.GetPlane(hits[0].trackableId) == detectedPlane)
             {
                 if (!pointer.activeSelf)
                 {
                     pointer.SetActive(true);
-                    pointer.transform.position = hit.Pose.position;
+                    pointer.transform.position = hits[0].pose.position;
                 }
 
                 //float snakePosY = snakeInstance.transform.localPosition.y;
 
-                Vector3 pt = hit.Pose.position;
+                Vector3 pt = hits[0].pose.position;
                 //Set the Y to the Y of the snakeInstance
                 //pt.y = snakePosY;
 

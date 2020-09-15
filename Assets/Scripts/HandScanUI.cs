@@ -9,9 +9,15 @@ using UnityEngine.Video;
 public class HandScanUI : MonoBehaviour
 {
     public Text handUIText;
-    public RawImage rawImage;
-    public VideoPlayer videoPlayer;
+    RawImage rawImage;
+    VideoPlayer videoPlayer;
     public Texture rawImageTexture;
+
+    void OnEnable()
+    {
+        videoPlayer = GetComponent<VideoPlayer>();
+        rawImage = GetComponent<RawImage>();
+    }
 
     void Start()
     {

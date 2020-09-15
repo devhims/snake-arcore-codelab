@@ -1,13 +1,16 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using GoogleARCore;
+using UnityEngine.XR.ARFoundation;
+using UnityEngine.XR.ARSubsystems;
 using System;
 
 public class SceneController : MonoBehaviour
 {
-    public static event Action<DetectedPlane> PlaneSelected;
+    public static event Action<ARPlane> PlaneSelected;
     public static bool playing = false;
+    public ARRaycastManager raycastManager;
+    public ARPlaneManager planeManager;
 
     private void OnEnable()
     {
@@ -33,14 +36,22 @@ public class SceneController : MonoBehaviour
 
             if (touch0.phase == TouchPhase.Began)
             {
-                TrackableHit hit;
-                TrackableHitFlags raycastFilter = TrackableHitFlags.PlaneWithinBounds | TrackableHitFlags.PlaneWithinPolygon;
+                List<ARRaycastHit> hits = new List<ARRaycastHit>();
 
-                if (Frame.Raycast(touch0.position.x, touch0.position.y, raycastFilter, out hit) && !playing)
+                if (raycastManager.Raycast(touch0.position, hits, TrackableType.PlaneWithinBounds) && !playing)
                 {
                     playing = true;
                     Time.timeScale = 1;
-                    PlaneSelected?.Invoke(hit.Trackable as DetectedPlane);
+
+                    foreach (var plane in planeManager.trackables)
+                    {
+                        plane.gameObject.SetActive(false);
+                    }
+
+                    planeManager.planePrefab.GetComponent<MeshRenderer>().enabled = false;
+                    planeManager.planePrefab.GetComponent<ARPlaneMeshVisualizer>().enabled = false;
+
+                    PlaneSelected?.Invoke(planeManager.GetPlane(hits[0].trackableId));
                 }
             }
         }

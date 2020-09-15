@@ -1,22 +1,30 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using GoogleARCore;
+using UnityEngine.XR.ARFoundation;
+using UnityEngine.XR.ARSubsystems;
 using UnityEngine.UI;
+using System.Linq;
 
 public class FoodController : MonoBehaviour
 {
     public GameObject[] foodModels;
+    public ARAnchorManager aRReferencePointManager;
 
-    DetectedPlane detectedPlane;
+
     GameObject foodInstance;
 
     AudioSource audioSource;
-    Anchor anchor;
+    ARAnchor anchor;
+
+    ARPlane detectedPlane;
+    Mesh planeMesh;
+
 
     private void Awake()
     {
         audioSource = GetComponent<AudioSource>();
+        planeMesh = new Mesh();
     }
 
     void OnEnable()
@@ -31,7 +39,7 @@ public class FoodController : MonoBehaviour
         BombMotion.BombDead -= PlayAudio;
     }
 
-    public void SetSelectedPlane(DetectedPlane selectedPlane)
+    public void SetSelectedPlane(ARPlane selectedPlane)
     {
         detectedPlane = selectedPlane;
         foodInstance?.SetActive(false);
@@ -40,14 +48,14 @@ public class FoodController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (detectedPlane == null || detectedPlane.TrackingState != TrackingState.Tracking)
+        if (detectedPlane == null || detectedPlane.trackingState != TrackingState.Tracking)
         {
             return;
         }
 
-        while (detectedPlane.SubsumedBy != null)
+        while (detectedPlane.subsumedBy != null)
         {
-            detectedPlane = detectedPlane.SubsumedBy;
+            detectedPlane = detectedPlane.subsumedBy;
         }
 
         if (foodInstance == null || foodInstance.activeSelf == false)
@@ -55,19 +63,20 @@ public class FoodController : MonoBehaviour
             SpawnFoodInstance();
             return;
         }
-    } 
+    }
+
 
     void SpawnFoodInstance()
-    { 
-        List<Vector3> vertices = new List<Vector3>();
-        detectedPlane.GetBoundaryPolygon(vertices);
+    {
+        var boundary = detectedPlane.boundary;
+        var planeSpaceVertex = boundary[Random.Range(0, boundary.Length)];
+        var worldSpaceVertex = detectedPlane.transform.TransformPoint(new Vector3(planeSpaceVertex.x, 0, planeSpaceVertex.y));
 
-        Vector3 pt = vertices[Random.Range(0, vertices.Count)];
         float dist = Random.Range(0.05f, 1f);
-        Vector3 position = Vector3.Lerp(pt, detectedPlane.CenterPose.position, dist);
+        Vector3 position = Vector3.Lerp(worldSpaceVertex, detectedPlane.center, dist);
 
         anchor = null;
-        anchor = detectedPlane.CreateAnchor(new Pose(position, Quaternion.identity));
+        anchor = aRReferencePointManager.AddAnchor(new Pose(position, Quaternion.identity));
 
         foodInstance = foodModels[Random.Range(0, foodModels.Length)];
         foodInstance.transform.position = position;

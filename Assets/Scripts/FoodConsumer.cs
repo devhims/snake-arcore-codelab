@@ -4,7 +4,6 @@ using System.Globalization;
 using UnityEngine;
 using UnityEngine.UI;
 using System;
-using GoogleARCore;
 
 public enum BiteType
 {

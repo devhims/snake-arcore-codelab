@@ -1,48 +1,80 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using GoogleARCore;
-using UnityEngine.Android;
+using UnityEngine.XR.ARFoundation;
 
 public class LifecycleManager : MonoBehaviour
 {
-    void Start()
-    {
-        QuitOnConnectionErrors();
-    }
+    [SerializeField] ARSession m_Session;
 
-    void QuitOnConnectionErrors()
+    IEnumerator Start()
     {
-        if (Session.Status == SessionStatus.ErrorPermissionNotGranted)
+        if (ARSession.state == ARSessionState.None || ARSession.state == ARSessionState.CheckingAvailability)
         {
-            StartCoroutine(CodelabUtils.ToastAndExit(
-                "Camera permission is needed to run this application.", 5));
+            yield return ARSession.CheckAvailability();
         }
-        else if (Session.Status.IsError())
+
+        if (ARSession.state == ARSessionState.Unsupported)
         {
-            // This covers a variety of errors.  See reference for details
-            // https://developers.google.com/ar/reference/unity/namespace/GoogleARCore
-            StartCoroutine(CodelabUtils.ToastAndExit(
-                "ARCore encountered a problem connecting. Please restart the app.", 5));
+            m_Session.enabled = false;
+            // Start some fallback experience for unsupported devices
+            _ShowAndroidToastMessage("We're sorry, your device is unsupported with this application");
+            Invoke("_DoQuit", 0.5f);
+        }
+        else
+        {
+            // Start the AR session
+            m_Session.enabled = true;
+            //EventBroker.FireShowHandUIEvent();
         }
     }
 
     void Update()
+    {
+        UpdateApplicationLifecycle();
+    }
+
+    void UpdateApplicationLifecycle()
     {
         if (Input.GetKeyDown(KeyCode.Escape))
         {
             Application.Quit();
         }
 
-        // The session status must be Tracking in order to access the Frame.
-        if (Session.Status != SessionStatus.Tracking)
+        //Screen.sleepTimeout = ARSession.state != ARSessionState.SessionTracking ? SleepTimeout.SystemSetting : SleepTimeout.NeverSleep;
+
+        if (ARSession.state != ARSessionState.SessionTracking)
         {
-            int lostTrackingSleepTimeout = 15;
-            Screen.sleepTimeout = lostTrackingSleepTimeout;
-            return;
+            Screen.sleepTimeout = SleepTimeout.SystemSetting;
+        }
+        else
+        {
+            Screen.sleepTimeout = SleepTimeout.NeverSleep;
         }
 
-        Screen.sleepTimeout = SleepTimeout.NeverSleep;
     }
 
+    void _DoQuit()
+    {
+        Application.Quit();
+    }
+
+    void _ShowAndroidToastMessage(string message)
+    {
+        AndroidJavaClass unityPlayer = new AndroidJavaClass("com.unity3d.player.UnityPlayer");
+        AndroidJavaObject unityActivity =
+            unityPlayer.GetStatic<AndroidJavaObject>("currentActivity");
+
+        if (unityActivity != null)
+        {
+            AndroidJavaClass toastClass = new AndroidJavaClass("android.widget.Toast");
+            unityActivity.Call("runOnUiThread", new AndroidJavaRunnable(() =>
+            {
+                AndroidJavaObject toastObject =
+                    toastClass.CallStatic<AndroidJavaObject>(
+                        "makeText", unityActivity, message, 0);
+                toastObject.Call("show");
+            }));
+        }
+    }
 }
